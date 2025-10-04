@@ -20,7 +20,7 @@ export class Piece {
         const newShape = Array.from({ length: cols }, () => Array(rows).fill(0));
         for (let y = 0; y < rows; y++) {
             for (let x = 0; x < cols; x++) {
-                newShape[x][rows - 1 - y] = this.shape[y][x];
+                newShape[x][rows-1-y] = this.shape[y][x];
             }
         }
         this.shape = newShape;

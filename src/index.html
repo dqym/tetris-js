@@ -23,9 +23,21 @@
 </div>
 
 <div id="overlay">
-    <button id="start_button">Start Game</button>
+    <div id="start_screen">
+        <input id="nickname_input" type="text" placeholder="Enter nickname">
+        <button id="start_button" disabled>Start Game</button>
+    </div>
 </div>
 
+<div id="game_over_screen" class="hidden">
+    <div id="game_over_content">
+        <h1>GAME OVER</h1>
+        <p>Your Score: <span id="final_score">0</span></p>
+        <button id="restart_button">Restart</button>
+    </div>
+</div>
+
+<script src="./js/nickname_input.js"></script>
 <script type="module" src="./js/main.js"></script>
 </body>
 </html>

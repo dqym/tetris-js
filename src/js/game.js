@@ -1,9 +1,10 @@
-import { Ui } from "./ui.js";
-import { Field } from "./field.js";
-import { Piece } from "./piece.js";
-import { Renderer } from "./field_renderer.js";
-import { NextPieceRenderer } from "./next_renderer.js";
-import { LEVELS } from "./config.js";
+import {Ui} from "./ui.js";
+import {Field} from "./field.js";
+import {Piece} from "./piece.js";
+import {Renderer} from "./field_renderer.js";
+import {NextPieceRenderer} from "./next_renderer.js";
+import {InputHandler} from "./input.js";
+import {LEVELS} from "./config.js";
 
 export class Game {
     constructor(canvas, nextCanvas, rows = 22, columns = 10) {
@@ -16,7 +17,7 @@ export class Game {
 
         this.canvas = canvas;
         this.canvas.width = this.gridWidth + 10;
-        this.canvas.height = this.cellSize * this.rows; // теперь точно помещается
+        this.canvas.height = this.cellSize * this.rows;
 
 
         this.field = new Field(rows, columns);
@@ -35,8 +36,13 @@ export class Game {
         this.dropInterval = LEVELS[this.level];
         this.dropCounter = 0;
         this.lastTime = 0;
+        this.isGameOver = false;
 
         this.ui = new Ui();
+        this.ui.updateScore(this.score);
+        this.ui.updateLevel(this.level);
+
+        this.input = new InputHandler(this);
     }
 
     start() {
@@ -47,6 +53,7 @@ export class Game {
     }
 
     loop(time = 0) {
+        if (this.isGameOver) return;
         const deltaTime = time - this.lastTime;
         this.lastTime = time;
         this.update(deltaTime);
@@ -80,7 +87,7 @@ export class Game {
         this.nextRenderer.draw(this.nextPiece);
 
         if (this.field.collision(this.currentPiece)) {
-            alert("Game Over!");
+            this.gameOver();
         }
     }
 
@@ -95,17 +102,17 @@ export class Game {
         this.dropInterval = LEVELS[this.level];
     }
 
-    previewRotation(piece) {
-        const shape = piece.shape;
-        const rows = shape.length;
-        const cols = shape[0].length;
-        const newShape = Array.from({ length: cols }, () => Array(rows).fill(0));
-        for (let y = 0; y < rows; y++) {
-            for (let x = 0; x < cols; x++) {
-                newShape[x][rows - 1 - y] = shape[y][x];
-            }
-        }
-        return newShape;
+    getRotatedShape(piece) {
+        piece.rotate();
+        return piece.shape;
+    }
+
+    gameOver() {
+        document.getElementById("final_score").textContent = this.score;
+        document.getElementById("game_over_screen").classList.remove("hidden");
+
+        this.input.detach();
+        this.isGameOver = true;
     }
 }
 
