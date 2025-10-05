@@ -18,6 +18,16 @@ document.getElementById("restart_button").addEventListener("click", () => {
     game.start();
 });
 
+document.getElementById("change_nickname_button").addEventListener("click", () => {
+    document.getElementById("game_over_screen").classList.add("hidden");
+
+    const input = document.getElementById("nickname_input");
+    input.value = "";
+    document.getElementById("start_button").disabled = true;
+
+    document.getElementById("overlay").style.display = "flex";
+});
+
 window.addEventListener("resize", () => {
     game.nextRenderer.resize();
     game.nextRenderer.draw(game.nextPiece);

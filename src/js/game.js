@@ -4,6 +4,7 @@ import {Piece} from "./piece.js";
 import {Renderer} from "./field_renderer.js";
 import {NextPieceRenderer} from "./next_renderer.js";
 import {InputHandler} from "./input.js";
+import {StorageManager} from "./storage.js";
 import {LEVELS} from "./config.js";
 
 export class Game {
@@ -33,6 +34,7 @@ export class Game {
 
         this.level = 1;
         this.score = 0;
+        this.nickname = null;
         this.dropInterval = LEVELS[this.level];
         this.dropCounter = 0;
         this.lastTime = 0;
@@ -42,6 +44,7 @@ export class Game {
         this.ui.updateScore(this.score);
         this.ui.updateLevel(this.level);
 
+        this.storage = new StorageManager();
         this.input = new InputHandler(this);
     }
 
@@ -108,7 +111,9 @@ export class Game {
     }
 
     gameOver() {
-        document.getElementById("final_score").textContent = this.score;
+        this.storage.saveRecord(this.nickname, this.score);
+        this.ui.showLeaderboard(this.storage, this.nickname, this.score);
+
         document.getElementById("game_over_screen").classList.remove("hidden");
 
         this.input.detach();
