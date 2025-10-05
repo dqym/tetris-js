@@ -2,7 +2,7 @@ export class InputHandler {
     constructor(game) {
         this.game = game;
         this.keydownHandler = this.handleKeydown.bind(this);
-        document.addEventListener("keydown", this.keydownHandler);
+        this.attach();
     }
 
     handleKeydown(e) {
@@ -46,5 +46,9 @@ export class InputHandler {
 
     detach() {
         document.removeEventListener("keydown", this.keydownHandler);
+    }
+
+    attach() {
+        document.addEventListener("keydown", this.keydownHandler);
     }
 }

@@ -14,8 +14,7 @@ document.getElementById("start_button").addEventListener("click", () => {
 document.getElementById("restart_button").addEventListener("click", () => {
     document.getElementById("game_over_screen").classList.add("hidden");
 
-    game = new Game(canvas, nextCanvas);
-    game.start();
+    game.restart();
 });
 
 document.getElementById("change_nickname_button").addEventListener("click", () => {

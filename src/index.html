@@ -12,6 +12,7 @@
 
     <div id="sidebar">
         <div id="score_container">
+            <p>User: <span id="username_value">&ltUnknown&gt</span></p>
             <p>Score: <span id="score_value">0</span></p>
             <p>Level: <span id="level_value">1</span></p>
         </div>
@@ -24,7 +25,7 @@
 
 <div id="overlay">
     <div id="start_screen">
-        <input id="nickname_input" type="text" placeholder="Enter nickname">
+        <input id="nickname_input" type="text" placeholder="Enter nickname" maxlength="10">
         <button id="start_button" disabled>Start Game</button>
     </div>
 </div>
@@ -40,7 +41,6 @@
 </div>
 
 
-<script src="./js/nickname_input.js"></script>
 <script type="module" src="./js/main.js"></script>
 </body>
 </html>

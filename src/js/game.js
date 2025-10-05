@@ -11,7 +11,6 @@ export class Game {
     constructor(canvas, nextCanvas, rows = 22, columns = 10) {
         this.rows = rows;
         this.columns = columns;
-
         const maxHeight = window.innerHeight * 0.95;
         this.cellSize = Math.floor(maxHeight / this.rows);
         this.gridWidth = this.columns * this.cellSize;
@@ -20,39 +19,47 @@ export class Game {
         this.canvas.width = this.gridWidth + 10;
         this.canvas.height = this.cellSize * this.rows;
 
-
         this.field = new Field(rows, columns);
         this.renderer = new Renderer(this.canvas, this.field, this.cellSize);
         this.renderer.draw(this.field, null);
-
         this.nextRenderer = new NextPieceRenderer(nextCanvas, this.cellSize);
-        this.nextRenderer.resize();
-        this.nextRenderer.draw(null);
-
-        this.currentPiece = null;
-        this.nextPiece = null;
-
-        this.level = 1;
-        this.score = 0;
-        this.nickname = null;
-        this.dropInterval = LEVELS[this.level];
-        this.dropCounter = 0;
-        this.lastTime = 0;
-        this.isGameOver = false;
 
         this.ui = new Ui();
-        this.ui.updateScore(this.score);
-        this.ui.updateLevel(this.level);
-
         this.storage = new StorageManager();
         this.input = new InputHandler(this);
     }
 
-    start() {
+    initNewGame(nickname) {
+        this.field.clear();
+        this.nextRenderer.resize();
+        this.nextRenderer.draw(null);
+
+        this.level = 1;
+        this.score = 0;
+        this.dropInterval = LEVELS[this.level];
+        this.dropCounter = 0;
+        this.lastTime = 0;
+        this.isGameOver = false;
+        this.nickname = nickname;
+
+        this.ui.updateScore(this.score);
+        this.ui.updateLevel(this.level);
+        this.ui.updateNickname(this.nickname);
+
         this.currentPiece = Piece.random(this.columns);
         this.nextPiece = Piece.random(this.columns);
         this.nextRenderer.draw(this.nextPiece);
+
+        this.input.attach();
         requestAnimationFrame(this.loop.bind(this));
+    }
+
+    start() {
+        this.initNewGame(this.ui.getNickname());
+    }
+
+    restart() {
+        this.initNewGame(this.nickname);
     }
 
     loop(time = 0) {
@@ -111,6 +118,7 @@ export class Game {
     }
 
     gameOver() {
+        console.log(this.nickname);
         this.storage.saveRecord(this.nickname, this.score);
         this.ui.showLeaderboard(this.storage, this.nickname, this.score);
 

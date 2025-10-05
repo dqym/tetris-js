@@ -5,6 +5,10 @@ export class Field {
         this.grid = Array.from({ length: this.rows }, () => Array(this.columns).fill(0));
     }
 
+    clear() {
+        this.grid = Array.from({ length: this.rows }, () => Array(this.columns).fill(0));
+    }
+
     placePiece(piece) {
         for (let y = 0; y < piece.shape.length; y++) {
             for (let x = 0; x < piece.shape[y].length; x++) {

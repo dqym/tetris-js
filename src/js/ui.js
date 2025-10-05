@@ -1,15 +1,30 @@
 export class Ui {
     constructor() {
-        this.score_value = document.getElementById("score_value");
-        this.level_value = document.getElementById("level_value");
+        this.scoreValue = document.getElementById("score_value");
+        this.levelValue = document.getElementById("level_value");
+        this.nicknameValue = document.getElementById("username_value");
+        this.nicknameInput = document.getElementById("nickname_input");
+        this.startButton = document.getElementById("start_button");
+
+        this.nicknameInput.addEventListener("input", () => {
+            this.startButton.disabled = this.nicknameInput.value.trim() === "";
+        });
     }
 
     updateLevel(level) {
-        this.level_value.innerText = level;
+        this.levelValue.innerText = level;
     }
 
     updateScore(score) {
-        this.score_value.innerText = score;
+        this.scoreValue.innerText = score;
+    }
+
+    updateNickname(nickname) {
+        this.nicknameValue.innerText = nickname;
+    }
+
+    getNickname() {
+        return this.nicknameInput.value;
     }
 
     showLeaderboard(storage, nickname, score) {
@@ -23,12 +38,12 @@ export class Ui {
         let table = document.createElement("table");
         table.classList.add("leaderboard-table");
 
-        topPlayers.forEach(([name, score], index) => {
+        topPlayers.forEach(([name, data], index) => {
             let row = document.createElement("tr");
             row.innerHTML = `
             <td>${index + 1}</td>
-            <td>${name}</td>
-            <td>${score}</td>
+            <td>${name.toUpperCase()}</td>
+            <td>${data["score"]}</td>
         `;
             table.appendChild(row);
         });
@@ -41,7 +56,7 @@ export class Ui {
             row.classList.add("player-row");
             row.innerHTML = `
             <td>${playerIndex + 1}</td>
-            <td>${nickname}</td>
+            <td>${nickname.toUpperCase()}</td>
             <td>${score}</td>
         `;
             table.appendChild(row);
