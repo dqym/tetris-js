@@ -118,7 +118,6 @@ export class Game {
     }
 
     gameOver() {
-        console.log(this.nickname);
         this.storage.saveRecord(this.nickname, this.score);
         this.ui.showLeaderboard(this.storage, this.nickname, this.score);
 

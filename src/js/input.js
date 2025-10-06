@@ -30,10 +30,7 @@ export class InputHandler {
                 break;
 
             case "ArrowUp":
-                const rotated = this.game.getRotatedShape(piece);
-                if (!this.game.field.collision(piece, 0, 0, rotated)) {
-                    piece.shape = rotated;
-                }
+                piece.rotate(this.game.field);
                 break;
 
             case " ":
